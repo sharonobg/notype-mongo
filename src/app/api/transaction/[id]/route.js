@@ -1,0 +1,73 @@
+import connect from "../../../../libs/mongodb";
+import{verifyToken} from '../../../../libs/jwt'
+import Transaction from "../../../../models/transactionModel";
+
+
+export async function GET(req,{params:{id}}){
+    //await connect();
+    //const id = ctx.params.id(can use ctx but id issues so revertin to params)
+    try{
+    const transaction = await Transaction.findById(id).populate("authorId").select('-password')
+    return new Response(JSON.stringify(transaction),{status:200})
+} catch (error) {
+    return new Response(JSON.stringify(null),{status:500})
+}
+}
+export async function PUT(req,{params:{id}}){
+   connect();
+    const accessToken = req.headers.get('authorization')
+    const token = accessToken.split(" ")[1]
+
+    const decodedToken = verifyToken(token)
+    if(!accessToken || !decodedToken){
+        return new Response(JSON.stringify({error: "unauthorized (wrong or expired token)"}),{status:403})
+    }
+    try{
+        //const { title, image, description } = req.body;
+//Transaction.findByIdAndUpdate(req.params.id, { title, image, description }, 
+        const id = ctx.params.id
+        const body = await req.json()
+        //console.log('body befor breaks: ',body)
+        const transaction = await Transaction.findById(id).populate("authorId");
+        console.log('id page transaction: ',transaction)
+        if(transaction?.authorId?._id.toString() !== decodedToken._id.toString()){
+            return new Response(JSON.stringify({message:"Only author can update his transaction"}),{status:403})
+        }
+        const updatedTransaction = await Transaction.findByIdAndUpdate(id, {$set:{...body} } ,{new: true})
+    
+        //console.log('updated: ',updatedTransaction)
+
+    return new Response(JSON.stringify(updatedTransaction),{status: 200})
+    //   return NextResponse.json(
+    //    {updatedTransaction},
+    //    {message: "Transaction edited"},
+    //    {status: 201}
+    //)
+
+
+    } catch(error) {
+        return new Response(JSON.stringify(null),{status:500})
+    }
+}
+
+export async function DELETE(req){
+    //await connect();
+    const accessToken = req.headers.get('authorization')
+    console.log('delete auth header: ', accessToken)
+    const token = accessToken.split(" ")[1]
+    const decodedToken = verifyToken(token)
+    if(!accessToken || !decodedToken){
+        return new Response(JSON.stringify({error: "unauthorized (wrong or expired token)"}),{status:403})
+    }
+    try{
+        const transaction = await Transaction.findById(id).populate("authorId");
+        if(transaction?.authorId?._id.toString() !== decodedToken._id.toString()){
+            return new Response(JSON.stringify({message:"Only author can delete his transaction"}),{status:403})
+        }
+        await Transaction.findByIdAndDelete(id)
+        return new Response(JSON.stringify({message:"Transaction deleted"}),{status: 200})
+    } catch(error) {
+        console.log('Error: ',error);
+        return new Response(JSON.stringify(null),{status:500})
+    }
+}
