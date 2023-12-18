@@ -10,7 +10,7 @@ export async function GET(request){
     try{
         await connect();
         const session = await getServerSession(authOptions);
-        const sessionUser = session?.user?._id;
+        //const sessionUser = session?.user?._id;
         const categories= await Category.find();
         
         return NextResponse.json(

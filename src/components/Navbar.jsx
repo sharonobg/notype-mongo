@@ -14,9 +14,11 @@ export default function Navbar() {
 
     return(
         <nav className="flex flex-row align-middle max-w-[100%] px-8 py-3 bg-blue-400 justify-between">
-            <Link className="text-white font-bold" href = {"/"}>New Mongo without Type</Link>
-            <Link className="text-white font-bold" href = {"/create-blog"}>Create Blog</Link>
-            <Link className="text-white font-bold" href = {"/addTopic"}>Add Topic</Link>
+            <Link className="text-white font-bold" href = {"/"}>Home</Link>
+            <Link className="text-white font-bold" href = {"/add-transaction"}>Add a transaction</Link>
+            
+            <div className="text-white font-bold">Logged in as: {session?.user?.email}</div>
+            
             <div className="flex flex-row ">
             {session?.user
             ?(

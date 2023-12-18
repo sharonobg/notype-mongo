@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+#support files:
+/mongo-notype-next-NOTES_BAKs
 # dependencies
 /node_modules
 /.pnp

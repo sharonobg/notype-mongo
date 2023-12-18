@@ -1,10 +1,12 @@
 import mongoose,{models,Schema} from "mongoose";
 
 const TransactionSchema = new Schema(
-    {   transdate:{
+    {   
+        transdate:{
         type: Date,
+        //type: new ISODate("<YYYY-mm-dd>"), doesnt wk
         default: new Date(),
-        required:false,
+        required:true
         },
         descr:{
             type: String,
@@ -21,15 +23,15 @@ const TransactionSchema = new Schema(
                 "other",
             ]
         },
-        categoryTitle:{
+        /*categoryTitle:{
             type:String,
             ref: "Category",
             required:false
-        },
+        },*/
         categoryId:{
             type:mongoose.Schema.Types.ObjectId,
             ref: "Category",
-            required:false
+            required:true
         },
         authorId: {
             type:mongoose.Schema.Types.ObjectId,
@@ -37,12 +39,14 @@ const TransactionSchema = new Schema(
             required:true
         },
         amount:{
-            default:0,
-            type:mongoose.Types.Decimal128,
+            default:1.00,
+            type:mongoose.Schema.Types.Decimal128,
+            //get: getAmount
             required:true
         }
     },
     {timestamps: true}
 );
+
 const Transaction = mongoose.models.Transaction || mongoose.model("Transaction", TransactionSchema);
 export default Transaction;

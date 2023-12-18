@@ -2,7 +2,6 @@ import connect from "../../../../libs/mongodb";
 import{verifyToken} from '../../../../libs/jwt'
 import Transaction from "../../../../models/transactionModel";
 
-
 export async function GET(req,{params:{id}}){
     //await connect();
     //const id = ctx.params.id(can use ctx but id issues so revertin to params)

@@ -26,9 +26,9 @@ const Login = () => {
             const res = await signIn('credentials', {email,password,redirect:false})
             if (res.ok){
                 setLoggedIn(true)
-                console.log('res',res)
-                //router.push("/")
-                toast.success("success")
+                //console.log('res',res)
+                router.push("/")
+                //toast.success("success")
 
               
             }else{

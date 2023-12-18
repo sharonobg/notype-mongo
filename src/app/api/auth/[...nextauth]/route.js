@@ -2,7 +2,8 @@ import NextAuth from "next-auth";
 //typescript: import NextAuth, { AuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from 'next-auth/providers/credentials';
-//import {MongoDBAdapter} from '@next-auth/mongodb-adapter'
+//import {MongoDBAdapter} from '@auth/mongodb-adapter'
+//import clientPromise from '../../../../libs/clientpromise'
 import User from '../../../../models/userModel';
 import {signToken} from '../../../../libs/jwt';
 import bcrypt from 'bcryptjs';
@@ -55,6 +56,7 @@ export const authOptions =
             })
         ],
         secret: process.env.NEXTAUTH_SECRET,
+        //adapter: MongoDBAdapter(clientPromise),
         pages: {
             signIn: '/login'
         },

@@ -10,15 +10,15 @@ import {useSession} from 'next-auth/react'
 
 
 const CreateTransaction = () => {
-    const [transdate,setTransdate]= useState("")
+    /*const [transdate,setTransdate]= useState("")*/
     const [descr,setDescr]= useState("")
     const [acctype,setAcctype]= useState("")
-    const [categoryTitle,setCategoryTitle]= useState("")
-    const [categoryId,setCategoryId]= useState("")
+    /*const [categoryTitle,setCategoryTitle]= useState("")
+    const [categoryId,setCategoryId]= useState("")*/
     const [amount,setAmount]= useState("")
     const {data:session,status} = useSession();
     const router= useRouter();
-    const [categories,setCategories]=useState([])
+    /*const [categories,setCategories]=useState([])*/
 
 
     //if(status === 'loading'){
@@ -32,7 +32,7 @@ const CreateTransaction = () => {
     const handleSubmit = async (e) => {
         
         e.preventDefault();
-        if( !descr ||!acctype ||!amount){
+        if( !descr){
             toast.error("Please fill in all the fields")
             return
         }
@@ -43,14 +43,16 @@ const CreateTransaction = () => {
                     "Authorization":`Bearer ${session?.user?.accessToken}`
                 },
                 method:'POST',
-                body:JSON.stringify({descr,acctype,categoryTitle,categoryId:e.target.id,authorId:session?.user?._id,amount},title)
+                body:JSON.stringify({descr,acctype,authorId:session?.user?._id})
             })
-            console.log('res: ',res)
+            console.log('res with fetch: ',res)
             if(!res.ok){
-                throw new Error("Error on auth")
+                //toast.error('did not work')
+                new Error("Error on auth")
             }
             const transaction = await res.json();
-            toast.success("Success!")
+           
+            //toast.success("Success!")
             router.push(`/add-transaction/${transaction?._id}`)
         }catch (error) {
 
@@ -58,17 +60,17 @@ const CreateTransaction = () => {
     }
     
     
-    useEffect(() => {
+    /*useEffect(() => {
         fetch('/api/category')
           .then((res) => res.json())
           .then(({categories}) => {
             setCategories(categories)
             //setLoading(false)
           })
-      }, [])
+      }, [])*/
 
-      if (!categories) return <p>no categories</p>
-     console.log('categories: ',categories)
+      //if (!categories) return <p>no categories</p>
+     //console.log('categories: ',categories)
     // const handleSelect = async (e) => {
     //    e.preventDefault();
     //    //const thisCatId = CategoryId.find({"title":e.target.value})
@@ -78,11 +80,11 @@ const CreateTransaction = () => {
         <>
         <div className="flex flex-col w-full place-items-center border-l-orange-100">
             <form onSubmit={handleSubmit} className="flex flex-col flex-wrap gap-5 my-3">
-            <input onChange={(e) => setTransdate(e.target.value)}
+            {/*<input onChange={(e) => setTransdate(e.target.value)}
                 name="transdate"
                 placeholder="Transaction Date"
                 type="date"
-                />
+                />*/}
                 <input onChange={(e) => setDescr(e.target.value)}
                 name="description"
                 placeholder="Description"
@@ -95,23 +97,20 @@ const CreateTransaction = () => {
                 <option value="other">Other</option>
                 </select>
                 
-                <select onChange={
-                    
-                    //</form>(e) => setCategoryId(e.target.id)
-                    (e) => {
-                        
-                        setCategoryTitle(e.target.value)
-                        setCategoryId(e.target.value.id)
-                        }}>
+                {/*<select onChange={(e) => setCategoryTitle(e.target.value)}>
                     {categories?.length > -1 ? 
                     (categories.map((category) => 
                         <option key={category._id} id={category._id} value={category.title}>{category.title}</option>
 
-                   ) ): "no categories are available"}</select>
+                   ) ): "no categories are available"}</select>*/}
                 <input onChange={(e) => setAmount(e.target.value)}
                 name="amount"
-                placeholder="Amount"
-                type="price"
+                placeholder="0.00"
+                type="number"
+                required
+                min="0"
+                step=".01"
+                
                 />
                 
                 

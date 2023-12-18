@@ -10,20 +10,28 @@ const TransactionDetails = (ctx) => {
     const [transactionDetails,setTransactionDetails]=useState("");
 
     const{data: session}= useSession();
-    //const router = useRouter();
+    const router = useRouter();
 
     useEffect(() => {
+        const id = ctx.params.id
        async function fetchTransaction(){                        
            const res = await fetch(`http://localhost:3000/api/transaction/${ctx.params.id}`,{cache:'no-store'})
            
            const transaction = await res.json()
-           console.log('transaction after await: ',transaction)
-           setTransactionDetails(transaction);
-           //console.log('transaction title: ',transaction?.descr)
-       }
-      session && fetchTransaction()
-      
-    },[session])
+           const transdate = new Date().toISOString();
+           const dataamount=transaction.amount.$numberDecimal;
+           setTransactionDetails({
+            transdate:transdate,
+            descr:transaction?.descr,
+            acctype:transaction.acctype,
+            categoryTitle:transaction.categoryTitle,
+            amount: dataamount,
+            authorId:session?.user?._id})
+        }
+    session && fetchTransaction()
+  
+},[session])
+    console.log('transactionDetails after set: ',transactionDetails)
  const handleDelete = async (ctx) => {
     try{
         const confirmModal = confirm("Do you want to delete this transaction?");
@@ -46,23 +54,26 @@ const TransactionDetails = (ctx) => {
     return(
 <div className="flex flex-col place-items-center">
         <div className="rounded-md w-[50%] p-3 place-items-center border border-blue-600 shadow-lg bg-yellow-100 min-h-[200px] text-black">
-        <h3>Author: {transactionDetails?.authorId?.username}</h3>
+        <h3>Author: {transactionDetails?.authorId?.email}</h3>
        <h3>Date: {transactionDetails?.transdate}</h3>
-       <h3>Description: {transactionDetails?.acctype}</h3>
+       <h3>Category: {transactionDetails?.categoryId}:{transactionDetails?.categoryTitle}</h3>
+       <h3>Account Type: {transactionDetails?.acctype}</h3>
         <h3>Description: {transactionDetails?.descr}</h3>
-        <h3>Category Title: {transactionDetails?.title}</h3>
-        <h3>Amount: {/*{transactionDetails?.amount}*/}</h3>
-        {transactionDetails?.authorId?._id.toString() === session?.user?._id.toString()
+        <h3>Amount:{transactionDetails?.amount}</h3>
+
+        
+        {/*{camp.budget['$numberDecimal'].toLocaleString()}*/}
+        {transactionDetails?.authorId?.toString() === session?.user?._id.toString()
             ?(<div className="controls">
                 <div className="flex gap-2 flex-row ">
                     <div className="flex flex-row">
                         <Link className="flex flex-row gap-1" href={`/add-transaction/edit/${ctx.params.id}`}>Edit<BsFillPencilFill /></Link>
                     </div>
-                    <button onClick={handleDelete} className="flex flex-row gap-1" >Delete<AiFillDelete /></button>
+                    {/*<button onClick={handleDelete} className="flex flex-row gap-1" >Delete<AiFillDelete /></button>*/}
                 </div>
             </div>)
             :(<>        
-            <div>Author:"there is an issue"</div>
+            <div>Author:{transactionDetails?.authorId?.username}</div>
             </>)
         }
         
