@@ -2,8 +2,7 @@
 import connect from '../libs/mongodb'
 //import TopicsList from '../components/TopicList'
 //import CategoryList from '../components/CategoryList'
-//import BlogsList from '../components/BlogsList'
-//import BlogsListId from '../components/BlogsListId'
+import BlogsList from '../components/BlogsList'
 //import {headers} from "next/headers"
 import Link from 'next/link';
 import TransactionsListId from '../components/TransactionsListId';
@@ -20,6 +19,7 @@ export default async function Home() {
     (
       <>
       <h1>Transaction List</h1>
+      <BlogsList />
       <TransactionsListId />
       
 

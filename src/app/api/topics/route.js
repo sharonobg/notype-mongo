@@ -5,7 +5,7 @@ import {NextResponse} from 'next/server';
 export async function POST(request){
     //send data as json
     const{title,description} = await request.json();
-    await connect();
+    //await connect();
     await Topic.create({title,description});
     return NextResponse.json(
         {message: "Topic Created"},
@@ -15,7 +15,7 @@ export async function POST(request){
 
 export async function GET(request){
     //send data as json
-    await connect();
+    //await connect();
     const topics = await Topic.find();
     return NextResponse.json(
         {topics},
@@ -27,7 +27,7 @@ export async function GET(request){
 export async function DELETE(request){
     //send data as json
     const id = request.nextUrl.searchParams.get('id');
-    await connect();
+    //await connect();
     await Topic.findByIdAndDelete(id);
     return NextResponse.json(
         

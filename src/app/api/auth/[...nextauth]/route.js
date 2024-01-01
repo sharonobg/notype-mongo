@@ -26,10 +26,13 @@ export const authOptions =
                 async authorize(credentials,req){
                     
                     const {email,password} = credentials
-                    await connect();
+                    connect();
                     const user = await User.findOne({email})
                     
-                    if(!user){ throw new Error("Invalid input")}
+                    if(!user){ 
+                        
+                        throw new Error("Invalid input")
+                }
                     //2 paramenters:
                     //1 normal password
                     //1 hashed password

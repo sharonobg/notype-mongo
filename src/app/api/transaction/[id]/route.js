@@ -3,7 +3,7 @@ import{verifyToken} from '../../../../libs/jwt'
 import Transaction from "../../../../models/transactionModel";
 
 export async function GET(req,{params:{id}}){
-    //await connect();
+    //connect();
     //const id = ctx.params.id(can use ctx but id issues so revertin to params)
     try{
     const transaction = await Transaction.findById(id).populate("authorId").select('-password')
@@ -13,7 +13,7 @@ export async function GET(req,{params:{id}}){
 }
 }
 export async function PUT(req,{params:{id}}){
-   connect();
+   //connect();
     const accessToken = req.headers.get('authorization')
     const token = accessToken.split(" ")[1]
 
@@ -21,10 +21,8 @@ export async function PUT(req,{params:{id}}){
     if(!accessToken || !decodedToken){
         return new Response(JSON.stringify({error: "unauthorized (wrong or expired token)"}),{status:403})
     }
-    try{
-        //const { title, image, description } = req.body;
-//Transaction.findByIdAndUpdate(req.params.id, { title, image, description }, 
-        const id = ctx.params.id
+    try{ 
+        //const id = ctx.params.id
         const body = await req.json()
         //console.log('body befor breaks: ',body)
         const transaction = await Transaction.findById(id).populate("authorId");
@@ -34,23 +32,20 @@ export async function PUT(req,{params:{id}}){
         }
         const updatedTransaction = await Transaction.findByIdAndUpdate(id, {$set:{...body} } ,{new: true})
     
-        //console.log('updated: ',updatedTransaction)
-
     return new Response(JSON.stringify(updatedTransaction),{status: 200})
-    //   return NextResponse.json(
-    //    {updatedTransaction},
-    //    {message: "Transaction edited"},
-    //    {status: 201}
-    //)
 
 
     } catch(error) {
+        console.log('error: ',error)
         return new Response(JSON.stringify(null),{status:500})
+        
     }
 }
 
-export async function DELETE(req){
+export async function DELETE(req, { params }){
     //await connect();
+    const id = params.id;
+    console.log(id);
     const accessToken = req.headers.get('authorization')
     console.log('delete auth header: ', accessToken)
     const token = accessToken.split(" ")[1]
@@ -63,7 +58,8 @@ export async function DELETE(req){
         if(transaction?.authorId?._id.toString() !== decodedToken._id.toString()){
             return new Response(JSON.stringify({message:"Only author can delete his transaction"}),{status:403})
         }
-        await Transaction.findByIdAndDelete(id)
+        
+        await Transaction.findByIdAndDelete({id })
         return new Response(JSON.stringify({message:"Transaction deleted"}),{status: 200})
     } catch(error) {
         console.log('Error: ',error);

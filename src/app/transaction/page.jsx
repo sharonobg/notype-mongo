@@ -4,10 +4,11 @@ import React,{useState,useEffect} from 'react';
 import {useRouter} from 'next/navigation';
 import {ToastContainer ,toast} from 'react-toastify';
 import {useSession} from 'next-auth/react'
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateTransaction = () => {
-    const [transdate,setTransdate]= useState("")
+    const [transdate,setTransdate]= useState(new Date())
     const [descr,setDescr]= useState("")
     const [acctype,setAcctype]= useState("")
     const [categories,setCategories]=useState([])
@@ -40,8 +41,8 @@ const CreateTransaction = () => {
             return
         }
         try{
-            const transdate = new Date().toISOString();
-            console.log(transdate)
+            //const transdate = new Date().toISOString();
+            console.log('transdate react-datepicker: ',transdate)
             //const amount = parseFloat(amount).toFixed(2);
             const res = await fetch('http://localhost:3000/api/transaction',{
                 headers:{
@@ -66,7 +67,7 @@ const CreateTransaction = () => {
             }
             const transaction = await res.json();
             console.log('transaction ln65',transaction)
-            router.push(`/add-transaction/${transaction?._id}`)
+            router.push(`/transaction/${transaction?._id}`)
         }catch (error) {
 
         }
@@ -77,13 +78,14 @@ const CreateTransaction = () => {
         <div className="flex flex-col w-full place-items-center border-l-orange-100">
             <h2>Create Transaction</h2>
             <form onSubmit={handleSubmit} className="flex flex-col flex-wrap gap-5 my-3">
-                <input onChange={(e) => setTransdate(e.target.value)}
+                {/*<input onChange={(e) => setTransdate(e.target.value)}
                     className=""
                     name="transdate"
                     id="transdate"
                     placeholder="Transaction Date"
                     type="date"
-                />
+                />*/}
+                <DatePicker classname="border border-blue-600" selected={transdate} onChange={(date) => setTransdate(date)} />
                 <input onChange={(e) => setDescr(e.target.value)}
                 className="px-4 py-2 mt-4 mx-5 border border-green-200 text-green-500"
                 name="description"

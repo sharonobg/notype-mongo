@@ -77,7 +77,7 @@ const CreateTransaction = () => {
                 throw new Error("Error on auth")
             }
             const transaction = await res.json();
-            router.push(`/add-transaction/${transaction?._id}`)
+            router.push(`/transaction/${transaction?._id}`)
         }catch (error) {
 
         }

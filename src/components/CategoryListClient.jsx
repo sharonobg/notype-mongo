@@ -5,7 +5,7 @@ import {useEffect,useState}from 'react'
 
 
 export default function CategoriesList() {
-    connect();
+    //connect();
 const {data:session}= useSession();
 //const categories = getCategories();
     const { status } = useSession();

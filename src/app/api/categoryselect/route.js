@@ -8,7 +8,7 @@ import {authOptions}from"../auth/[...nextauth]/route"
 export async function GET(request){
     //send data as JSON
     try{
-        await connect();
+        //await connect();
         const session = await getServerSession(authOptions);
         const sessionUser = session?.user?._id;
         const categories= await Category.find().toArray();

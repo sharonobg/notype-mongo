@@ -1,11 +1,10 @@
 import Link from "next/link"
-import {HiPencilAlt} from "react-icons/hi";
+import { BsFillPencilFill } from 'react-icons/bs'
+import {HiOutlineTrash} from "react-icons/hi";
 import {headers} from "next/headers"
 import {useSession} from 'next-auth/react'
 import Category from "../models/categoryModel";
-
-
-
+import RemoveTransaction from "../components/RemoveTransaction";
 const getTransactions = async () => {
     try{
         const res = await fetch("http://localhost:3000/api/transaction",{
@@ -44,7 +43,7 @@ const getTotals = async () => {
 export default async function TransactionList() {
     const {transactions} = await getTransactions();
    
-    console.log("transactions",{transactions})
+    //console.log("transactions",{transactions})
     const transactiontotals = await getTotals();
     
     //console.log("transactiontotals",transactiontotals)
@@ -66,10 +65,11 @@ export default async function TransactionList() {
                     
                     
                     <div className="border border-amber-500 w-[200px] py-2">{transaction?.amount.$numberDecimal}</div>
-                    
+                    <div className= "w-[100px] py-2">
+                    <RemoveTransaction id={transaction._id} />
+                        <Link className="flex flex-row gap-1 justify-center" href={`/transaction/${transaction?._id}`}><BsFillPencilFill /></Link>
+                    </div>
                 </div>
-                
-                
             </div>
         </div>
        ) ): "no transactions are available"}

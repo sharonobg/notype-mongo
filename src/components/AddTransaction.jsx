@@ -53,7 +53,7 @@ const CreateTransaction = () => {
             const transaction = await res.json();
            
             //toast.success("Success!")
-            router.push(`/add-transaction/${transaction?._id}`)
+            router.push(`/transaction/${transaction?._id}`)
         }catch (error) {
 
         }

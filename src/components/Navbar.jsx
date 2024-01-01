@@ -15,7 +15,7 @@ export default function Navbar() {
     return(
         <nav className="flex flex-row align-middle max-w-[100%] px-8 py-3 bg-blue-400 justify-between">
             <Link className="text-white font-bold" href = {"/"}>Home</Link>
-            <Link className="text-white font-bold" href = {"/add-transaction"}>Add a transaction</Link>
+            <Link className="text-white font-bold" href = {"/transaction"}>Add a transaction</Link>
             
             <div className="text-white font-bold">Logged in as: {session?.user?.email}</div>
             

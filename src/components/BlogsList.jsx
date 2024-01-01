@@ -24,7 +24,7 @@ const getBlogs = async () => {
 export default async function BlogsList() {
     
     const {blogs} = await getBlogs();
-console.log({blogs})
+//console.log({blogs})
     return(
        <>
         {blogs?.length > 0 ? (blogs.map((blog) => 

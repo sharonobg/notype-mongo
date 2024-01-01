@@ -5,7 +5,7 @@ import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 import { BsFillPencilFill } from 'react-icons/bs'
 import { AiFillDelete } from 'react-icons/ai'
-import {HiPencilAlt} from "react-icons/hi";
+import {HiOutlineTrash} from "react-icons/hi";
 //myblog?.authorId?._id.toString() === session?.user._id.toString()
 
 const BlogDetails = (ctx) => {
@@ -59,7 +59,7 @@ const BlogDetails = (ctx) => {
                     <div className="flex flex-row">
                         <Link className="flex flex-row gap-1" href={`/blog/edit/${ctx.params.id}`}>Edit<BsFillPencilFill /></Link>
                     </div>
-                    <button onClick={handleDelete} className="flex flex-row gap-1" >Delete<AiFillDelete /></button>
+                    <button onClick={handleDelete} className="flex flex-row gap-1" ><HiOutlineTrash size={24} /></button>
                 </div>
             </div>)
             :(<>        

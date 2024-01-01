@@ -9,7 +9,7 @@ import {authOptions}from"../auth/[...nextauth]/route"
 export async function GET(request){
     //send data as JSON
     try{
-        await connect();
+        //await connect();
         const session = await getServerSession(authOptions);
         //console.log('session: ',session)
         const sessionUser = session?.user?._id;
@@ -92,7 +92,7 @@ export async function GET(request){
 }
 
 export async function POST(request){
-    await connect();
+    //await connect();
     const accessToken = request.headers.get("authorization")
     const token = accessToken.split(' ')[1];
     const decodedToken = verifyToken(token);

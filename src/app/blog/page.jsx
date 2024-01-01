@@ -3,7 +3,7 @@ import {headers} from "next/headers"
 //654ebd3767c0637c5471b6b5
 
 const getBlogs = async () => {
-    await connect();
+    //await connect();
     try{
         const res = await fetch("http://localhost:3000/api/blog",{
         method: "GET",

@@ -38,7 +38,7 @@ export async function GET(request){
 
 
 
-            console.log('transaction-totals',transactionstotal)
+            //console.log('transaction-totals',transactionstotal)
         
         return new Response(JSON.stringify(transactionstotal),{status:200})
     }catch(error){
